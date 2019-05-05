@@ -50,7 +50,6 @@ void pegar_garfo(int id){
 }
 void deixar_garfo(int id){
     sem_wait(&mutex);
-    
     estados[id] = PENSANDO;//O filósofo deixou de comer
     //printf("Filósofo %d deixa os garfos %d e %d\n", id + 1, ESQUERDA + 1, DIREITA + 1); 
     printf("Filósofo %d: PENSANDO (deixa os garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);

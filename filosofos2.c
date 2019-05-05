@@ -80,6 +80,7 @@ void *inicia(void *id){
 }
 
 int main(){
+
     pthread_t thread_id[5];//armazena os handles das threads de cada filosofo
 
     sem_init(&mutex, 0, 1); //cria o semaphoro pra exclusão mutua
@@ -106,8 +107,6 @@ int main(){
     for (int i = 0; i < 5; i++){
         pthread_join(thread_id[i], NULL);
     }
-
-
 
     return 0;
 }

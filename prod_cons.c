@@ -17,7 +17,6 @@ int quant = 0; //Quantidade inicial inicia como vazio
 
 void listagem(){ //Por questões de simplificação, será listado apenas a quantidade
                  //de elementos
-
     if(quant == VAZIO){
         printf("%d | ",quant);
     }
