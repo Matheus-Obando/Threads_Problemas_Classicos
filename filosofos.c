@@ -31,6 +31,7 @@ void verifica(int id){
         //Se o filósofo estiver com fome e os filósfos a sua esquerda e a sua direita
         //não estiverem comendo então:
         estados[id] = COMENDO;//o filosofo pode comer
+        sleep(1);
         printf("Filósofo %d: COMENDO (garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);
         //Obs1: um dos garfos pertence ao filósofo (mesmo índice)
         sleep(1);        
@@ -43,18 +44,16 @@ void pegar_garfo(int id){
     sem_wait(&mutex);
     estados[id] = FOME;
     printf("Filósofo %d: COM FOME\n", id + 1);
-    sleep(1);
     verifica(id);//Verifica se pode comer
     sem_post(&mutex);
     sem_wait(&semaphores[id]);
 }
 void deixar_garfo(int id){
     sem_wait(&mutex);
-    estados[id] = PENSANDO;//O filósofo deixou de comer
-    //printf("Filósofo %d deixa os garfos %d e %d\n", id + 1, ESQUERDA + 1, DIREITA + 1); 
+    estados[id] = PENSANDO;//O filósofo deixou de comer 
     printf("Filósofo %d: PENSANDO (deixa os garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);
     //Como o filósofo devolveu os garfos, os filósofos ao seu lado
-    //Irão verificar a possibilidade de comer
+    //irão verificar a possibilidade de comer
     verifica(ESQUERDA);
     verifica(DIREITA);
     sem_post(&mutex);
@@ -88,6 +87,7 @@ int main(){
         //No estado inicial todos os filósofos estão pensando
         printf("\tFilósofo %d: PENSANDO\n", i + 1);
     }
+    
     printf("\n");
 
     //executando as threads

@@ -20,7 +20,6 @@
                               //Filósofo a esquerda: (4 + 1) % 5 = 0 (índice)
 
 sem_t mutex;//semaforo utilizado na exclusao mutua
-//sem_t semaphores[5];//armazena os semaphores de cada filosofo
 
 //Definindo a estrutura de dados dos filósofos
 typedef struct{
@@ -39,7 +38,7 @@ void verifica(int id){
         sleep(1);
         printf("Filósofo %d: COMENDO (garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);
         sleep(1);
-        //Obs1: um dos garfos pertence ao filósofo (mesmo índice)        
+        //Obs: um dos garfos pertence ao filósofo (mesmo índice)        
         sem_post(&filosofos[id].semaphore);
     }
 
@@ -49,20 +48,17 @@ void pegar_garfo(int id){
     sem_wait(&mutex);
     filosofos[id].estado = FOME;
     printf("Filósofo %d: COM FOME\n", id + 1);
-    sleep(1);
     verifica(id);//Verifica se pode comer
     sem_post(&mutex);
     sem_wait(&filosofos[id].semaphore);
-    //sleep(1);
 }
 
 void deixar_garfo(int id){
     sem_wait(&mutex);
-    filosofos[id].estado = PENSANDO;//O filósofo deixou de comer
-    //printf("Filósofo %d deixa os garfos %d e %d\n", id + 1, ESQUERDA + 1, DIREITA + 1); 
+    filosofos[id].estado = PENSANDO;//O filósofo deixou de comer 
     printf("Filósofo %d: PENSANDO (deixa os garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);
     //Como o filósofo devolveu os garfos, os filósofos ao seu lado
-    //Irão verificar a possibilidade de comer
+    //irão verificar a possibilidade de comer
     verifica(ESQUERDA);
     verifica(DIREITA);
     sem_post(&mutex);
