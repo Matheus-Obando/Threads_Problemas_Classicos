@@ -17,7 +17,7 @@
 #define ESQUERDA (id + 4) % 5 //ex: filósofo 5 (índice 4)
                                //Filósofo a esquerda: (4 + 4) % 5 = 3 (índice)
 #define DIREITA (id + 1) % 5 //ex: filósofo 5 (índice 4)
-                              //Filósofo a esquerda: (4 + 1) % 5 = 0 (índice)
+                              //Filósofo a direita: (4 + 1) % 5 = 0 (índice)
 
 //Dados globais
 int estados[5];//Armazena os estados dos filósofos
