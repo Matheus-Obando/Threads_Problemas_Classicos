@@ -16,10 +16,9 @@ sem_t vazio, cheio, mutex;
 int quant = 0; //Quantidade inicial inicia como vazio
 int buffer[12];//Buffer compartilhado entre produtores e consumidores
 
-void listagem(){ //Por questões de simplificação, será listado apenas a quantidade
-                 //de elementos
+void listagem(){ //lista os elementos do buffer
     if(quant == VAZIO){
-        printf("%d | ",quant);
+        printf("Buffer Vazio");
     }
     else{
         for(int i = 0; i < quant; i++){
