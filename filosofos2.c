@@ -8,18 +8,18 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-//Definindo os possiveis estados dos filosofos (por questoes de simplificação do código)
+//Definindo os possiveis estados dos filósofos (por questões de simplificação do código)
 #define PENSANDO 0
 #define FOME 1
 #define COMENDO 2
 
 //Definindo os valores para a movimentação no vetor de filósofos
-#define ESQUERDA (id + 4) % 5 //ex: filosofo 5 (indice 4)
+#define ESQUERDA (id + 4) % 5 //ex: filósofo 5 (indice 4)
                                //Filósofo a esquerda: (4 + 4) % 5 = 3 (índice)
-#define DIREITA (id + 1) % 5 //ex: filosofo 5 (indice 4)
+#define DIREITA (id + 1) % 5 //ex: filósofo 5 (indice 4)
                               //Filósofo a esquerda: (4 + 1) % 5 = 0 (índice)
 
-sem_t mutex;//semaforo utilizado na exclusao mutua
+sem_t mutex;//semaphore utilizado na exclusão mútua
 
 //Definindo a estrutura de dados dos filósofos
 typedef struct{
@@ -28,13 +28,13 @@ typedef struct{
     sem_t semaphore;//cada filósofo possui um semaphore
 }Filosofo;
 
-Filosofo filosofos[5];//vetor de filosofos global
+Filosofo filosofos[5];//vetor de filósofos global
 
 void verifica(int id){
     if(filosofos[id].estado == FOME && filosofos[ESQUERDA].estado != COMENDO && filosofos[DIREITA].estado != COMENDO){
-        //Se o filósofo estiver com fome e os filósfos a sua esquerda e a sua direita
+        //Se o filósofo estiver com fome e os filósofos a sua esquerda e a sua direita
         //não estiverem comendo então:
-        filosofos[id].estado = COMENDO;//o filosofo pode comer
+        filosofos[id].estado = COMENDO;//o filósofo pode comer
         sleep(1);
         printf("Filósofo %d: COMENDO (garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);
         sleep(1);
@@ -77,16 +77,16 @@ void *inicia(void *id){
 
 int main(){
 
-    pthread_t thread_id[5];//armazena os handles das threads de cada filosofo
+    pthread_t thread_id[5];//armazena os handles das threads de cada filósofo
 
-    sem_init(&mutex, 0, 1); //cria o semaphoro pra exclusão mutua
+    sem_init(&mutex, 0, 1); //inicializa o semaphore pra exclusão mutua
 
-    //inicializando cada struct dos filósofos
+    //inicializando as structs de cada filósofo
     for (int i = 0; i < 5; i++){
         Filosofo f;
         f.valor = i;
         f.estado = PENSANDO;
-        sem_init(&f.semaphore, 0, 0);//inicializa o semaphore de cada filósofo
+        sem_init(&f.semaphore, 0, 0);//inicializa os semaphores de cada filósofo
         filosofos[i] = f;
     }
 
@@ -97,6 +97,7 @@ int main(){
         //No estado inicial todos os filósofos estão pensando
         printf("\tFilósofo %d: PENSANDO\n", i + 1);
     }
+    
     printf("\n");
 
     //executando as threads
