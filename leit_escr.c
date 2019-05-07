@@ -1,3 +1,5 @@
+//Problema Clássico: Leitores x Escritores
+
 #include<stdio.h>
 #include<time.h>
 #include<semaphore.h>
@@ -29,7 +31,7 @@ void endread(){
         sem_post(&wmutex);
     }
     sem_post(&rmutex);
-    sleep(1);
+    sleep(1);//Área crítica
 }
 
 void startwrite(){
@@ -44,14 +46,14 @@ void *reader(){
     while(1){
         startread();
         printf("Lendo conteúdo: - %s \n", buf);
-        sleep(1);
+        sleep(1);//Área crítica
         endread();
     }
 }
 
 void *writer(){
     while(1){
-        sleep(1);
+        sleep(1);//Área crítica
         startwrite();
         printf("Escreva: ");
         scanf("%s", &buf);

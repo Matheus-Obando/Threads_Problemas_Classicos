@@ -1,5 +1,3 @@
-//TRABALHO DE SISTEMAS OPERACIONAIS
-//Alunos: Matheus Obando, Caio Câmara
 //Problema Clássico: O jantar dos filósofos
 
 //Definindo as bibliotecas

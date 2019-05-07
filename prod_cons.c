@@ -1,5 +1,3 @@
-//TRABALHO DE SISTEMAS OPERACIONAIS
-//Alunos: Matheus Obando, Caio Câmara
 //Problema Clássico: Problema do produtor e do consumidor
 
 //Definindo as bibliotecas
