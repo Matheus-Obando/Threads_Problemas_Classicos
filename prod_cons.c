@@ -14,48 +14,55 @@ sem_t vazio, cheio, mutex;
 #define VAZIO 0 
 #define CHEIO 12 //Tamanho máximo do buffer dado como exemplo
 int quant = 0; //Quantidade inicial inicia como vazio
+int buffer[12];//Buffer compartilhado entre produtores e consumidores
 
-void listagem(){ //Por questões de simplificação, será listado apenas a quantidade
-                 //de elementos
+void listagem(){ //lista os elementos do buffer
     if(quant == VAZIO){
-        printf("%d | ",quant);
+        printf("Buffer Vazio");
     }
     else{
         for(int i = 0; i < quant; i++){
-            printf("%d | ", i+1);
+            printf("%d | ", buffer[i]);
         }
     }
     printf("\n");
 }
 
-void insere_item(){
+void insere_item(int id){
+    buffer[quant] = id;//o buffer recebe a id do produtor
     quant = quant + 1;
     listagem();
 }
 
-void consome_item(){
+void consome_item(int id){
+    buffer[quant - 1] = 0;//atribui zero ao espaço do último elemento
     quant = quant - 1;
     listagem();
 }
 
-void *produz(){
+void *produz(void *id){
     for(int i = 0; i < 30; i++){
-        sem_wait(&vazio);
         sem_wait(&mutex);
+        sem_wait(&vazio);
+        int *num = id;
         sleep(1);
-        insere_item();
-        sem_post(&mutex);
+        insere_item(*num);
         sem_post(&cheio);
+        sem_post(&mutex);
+        sleep(1);
     }
 }
-void *consome(){
+void *consome(void *id){
     for(int i = 0; i < 30; i++){
-        sem_wait(&cheio);
-        sem_wait(&mutex);
         sleep(1);
-        consome_item();
-        sem_post(&mutex);
+        sem_wait(&mutex);
+        sem_wait(&cheio);
+        int *num = id;
+        sleep(1);
+        consome_item(*num);
         sem_post(&vazio);
+        sem_post(&mutex);
+        sleep(1);
     }
 }
 
@@ -63,6 +70,8 @@ int main(){
 
     pthread_t thread_prod[3];//thread handles dos produtores
     pthread_t thread_cons[3];//thread handles dos consumidores
+    int produtores[3] = {1,2,3};//ids dos produtores
+    int consumidores[3] = {1,2,3};//ids dos consumidores
     
     //iniciando os semaphores
     //O semaphore 'vazio' conta o número de espaços disponíveis no buffer
@@ -74,8 +83,8 @@ int main(){
     
     //criando as threads
     for(int i = 0; i < 3; i++){
-        pthread_create(&thread_prod[i], NULL, produz, NULL);
-        pthread_create(&thread_cons[i], NULL, consome, NULL);
+        pthread_create(&thread_prod[i], NULL, produz, &produtores[i]);
+        pthread_create(&thread_cons[i], NULL, consome, &consumidores[i]);
     }
 
     listagem();
