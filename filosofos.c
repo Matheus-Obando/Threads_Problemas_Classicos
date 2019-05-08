@@ -76,7 +76,7 @@ void *inicia(void *id){
 
 int main(){
 
-    pthread_t thread_id;//armazena os handles das threads de cada filósofo
+    pthread_t thread_id;
 
     sem_init(&mutex, 0, 1); //inicializa o semaphore pra exclusão mutua
 

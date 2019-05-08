@@ -66,8 +66,8 @@ void *consome(void *id){
 
 int main(){
 
-    pthread_t thread_prod;//thread handles dos produtores
-    pthread_t thread_cons;//thread handles dos consumidores
+    pthread_t thread_prod;
+    pthread_t thread_cons;
     int produtores[3] = {1,2,3};//ids dos produtores
     int consumidores[3] = {1,2,3};//ids dos consumidores
     
