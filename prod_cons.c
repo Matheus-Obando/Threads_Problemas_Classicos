@@ -66,8 +66,8 @@ void *consome(void *id){
 
 int main(){
 
-    pthread_t thread_prod[3];//thread handles dos produtores
-    pthread_t thread_cons[3];//thread handles dos consumidores
+    pthread_t thread_prod;//thread handles dos produtores
+    pthread_t thread_cons;//thread handles dos consumidores
     int produtores[3] = {1,2,3};//ids dos produtores
     int consumidores[3] = {1,2,3};//ids dos consumidores
     
@@ -81,17 +81,15 @@ int main(){
     
     //criando as threads
     for(int i = 0; i < 3; i++){
-        pthread_create(&thread_prod[i], NULL, produz, &produtores[i]);
-        pthread_create(&thread_cons[i], NULL, consome, &consumidores[i]);
+        pthread_create(&thread_prod, NULL, produz, &produtores[i]);
+        pthread_create(&thread_cons, NULL, consome, &consumidores[i]);
     }
 
     listagem();
 
     //inicializando as threads
-    for(int i = 0; i < 3; i++){
-        pthread_join(thread_prod[i], NULL);
-        pthread_join(thread_cons[i], NULL);
-    }
-
+    pthread_join(thread_prod, NULL);
+    pthread_join(thread_cons, NULL);
+    
 	return 0;
 }

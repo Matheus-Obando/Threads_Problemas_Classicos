@@ -35,9 +35,9 @@ void verifica(int id){
         filosofos[id].estado = COMENDO;//o filósofo pode comer
         sleep(1);
         printf("Filósofo %d: COMENDO (garfos %d e %d)\n", id + 1, id + 1, DIREITA + 1);
-        sleep(1);
         //Obs: um dos garfos pertence ao filósofo (mesmo índice)        
         sem_post(&filosofos[id].semaphore);
+        sleep(1);
     }
 
 }
@@ -59,6 +59,7 @@ void deixar_garfo(int id){
     //irão verificar a possibilidade de comer
     verifica(ESQUERDA);
     verifica(DIREITA);
+    sleep(1);
     sem_post(&mutex);
 
 }
@@ -75,7 +76,7 @@ void *inicia(void *id){
 
 int main(){
 
-    pthread_t thread_id[5];//armazena os handles das threads de cada filósofo
+    pthread_t thread_id;//armazena os handles das threads de cada filósofo
 
     sem_init(&mutex, 0, 1); //inicializa o semaphore pra exclusão mutua
 
@@ -91,17 +92,13 @@ int main(){
     //Criando as threads
     printf("Estados iniciais:\n\n");
     for (int i = 0; i < 5; i++){
-        pthread_create(&thread_id[i], NULL, inicia, &filosofos[i]);
+        pthread_create(&thread_id, NULL, inicia, &filosofos[i]);
         //No estado inicial todos os filósofos estão pensando
         printf("\tFilósofo %d: PENSANDO\n", i + 1);
     }
     
     printf("\n");
-
-    //executando as threads
-    for (int i = 0; i < 5; i++){
-        pthread_join(thread_id[i], NULL);
-    }
-
+    pthread_join(thread_id, NULL);
+ 
     return 0;
 }

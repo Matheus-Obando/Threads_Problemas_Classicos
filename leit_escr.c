@@ -1,4 +1,4 @@
-//Problema Clássico: Leitores x Escritores
+//Problema clássico: Leitor x Escritor
 
 #include<stdio.h>
 #include<time.h>
@@ -31,7 +31,7 @@ void endread(){
         sem_post(&wmutex);
     }
     sem_post(&rmutex);
-    sleep(1);//Área crítica
+    sleep(1);
 }
 
 void startwrite(){
@@ -46,14 +46,14 @@ void *reader(){
     while(1){
         startread();
         printf("Lendo conteúdo: - %s \n", buf);
-        sleep(1);//Área crítica
+        sleep(1);
         endread();
     }
 }
 
 void *writer(){
     while(1){
-        sleep(1);//Área crítica
+        sleep(1);
         startwrite();
         printf("Escreva: ");
         scanf("%s", &buf);
@@ -67,24 +67,19 @@ int main(){
     sem_init(&wmutex,0,1);
     sem_init(&rmutex,0,1);
     initwrite();
-    pthread_t thread_r[4];
-    pthread_t thread_w[2];
+    pthread_t thread_r;
+    pthread_t thread_w;
 
     for(i=0; i<4; i++){
-        pthread_create(&thread_r[i], NULL, reader, NULL);
+        pthread_create(&thread_r, NULL, reader, NULL);
     }
 
     for(i=0; i<2; i++){
-        pthread_create(&thread_w[i], NULL, writer, NULL);
+        pthread_create(&thread_w, NULL, writer, NULL);
     }
 
-    for(i=0; i<4; i++){
-        pthread_join(thread_r[i],NULL);
-    }
-
-    for(i=0; i<2; i++){
-        pthread_join(thread_w[i],NULL);
-    }
+    pthread_join(thread_r,NULL);
+    pthread_join(thread_w,NULL);
 
     return 0;
 
