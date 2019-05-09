@@ -64,8 +64,6 @@ void *T3(void *id){
         sleep(1);
         sem_post(&mutex);
         sem_post(&prodex);
-        //sem_post(&mutex);
-        //sem_post(&prodex);
     }
 }
 
