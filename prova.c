@@ -11,7 +11,8 @@
 #include <pthread.h>
 #include <semaphore.h>
 
-sem_t prodex, conex, mutex, final;
+sem_t prodex, conex, final;
+//sem_t mutex;
 
 int count = 0;
 int cond = 0;
@@ -43,11 +44,11 @@ void consome(int id){
 void *T1T2(void *id){
     while(1){
         sem_wait(&prodex);
-        sem_wait(&mutex);
+        //sem_wait(&mutex);
         int *num = id;
         produz(*num);
         sleep(1);
-        sem_post(&mutex);
+        //sem_post(&mutex);
         cond++;
         if(cond == 2){
             sem_post(&conex);
@@ -58,11 +59,11 @@ void *T1T2(void *id){
 void *T3(void *id){
     while(1){
         sem_wait(&conex);
-        sem_wait(&mutex);
+        //sem_wait(&mutex);
         int *num = id;
         consome(*num);
         sleep(1);
-        sem_post(&mutex);
+        //sem_post(&mutex);
         sem_post(&prodex);
     }
 }
@@ -70,11 +71,11 @@ void *T3(void *id){
 void *T4(void *id){
     while(1){
         sem_wait(&final);
-        sem_wait(&mutex);
+        //sem_wait(&mutex);
         int *num = id;
         consome(*num);
         sleep(1);
-        sem_post(&mutex);
+        //sem_post(&mutex);
         sem_post(&prodex);
     }
 }
@@ -84,7 +85,7 @@ int main(){
     pthread_t T[4];
     int id[4]= {1,2,3,4};
     
-    sem_init(&mutex, 0, 1);
+    //sem_init(&mutex, 0, 1);
     sem_init(&prodex, 0, 2);
     sem_init(&conex, 0, 0);
     sem_init(&final, 0, 0);
